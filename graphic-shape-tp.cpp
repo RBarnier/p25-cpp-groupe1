@@ -21,6 +21,7 @@ Only by adding some code and modifying the main function.
 */
 #include <iostream>
 #include <vector>
+#include <stdexcept>
 
 class Shape
 {
@@ -45,7 +46,13 @@ class Circle : public Shape
   int radius;
 
 public:
-  Circle(int x, int y, int r) : Shape(x, y), radius(r) {}
+  Circle(int x, int y, int r) : Shape(x, y), radius(r)
+  {
+    if (r < 0)
+    {
+      throw std::out_of_range(std::string("rayon négatif"));
+    }
+  }
 
   double area()
   {
@@ -59,7 +66,13 @@ class Rectangle : public Shape
   int h;
 
 public:
-  Rectangle(int x, int y, int h, int w) : Shape(x, y), h(h), w(w) {}
+  Rectangle(int x, int y, int h, int w) : Shape(x, y), h(h), w(w)
+  {
+    if (h < 0 or w < 0)
+    {
+      throw std::out_of_range(std::string("longueur ou largeur négative"));
+    }
+  }
 
   double area()
   {
@@ -69,7 +82,9 @@ public:
 
 int main()
 {
-  Circle c1(100, 50, 12.4);
+  try
+  {
+      Circle c1(100, 50, 12.4);
   c1.move(15, 67);
   std::cout << c1.area() << std::endl;
 
@@ -84,7 +99,7 @@ int main()
   shapes.push_back(&c1);
   shapes.push_back(&r1);
 
-  for (int i = 0; i < shapes.size (); i++)
+  for (int i = 0; i < shapes.size(); i++)
   {
     shapes[i]->move(2, 3);
     std::cout << shapes[i]->area() << std::endl;
@@ -97,5 +112,10 @@ int main()
   //  ed.add(r2);
   //  ed.find(71, 81).area();
   //  ed.find(30, 120).move(10, 80);
+  }
+  catch(const std::exception& e)
+  {
+    std::cerr << e.what() << '\n';
+  }
   return 0;
 }

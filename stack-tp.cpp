@@ -85,21 +85,34 @@ int pop(int *tab, int size, int &nb) // (cette fonction dépile)
 // https://en.cppreference.com/w/cpp/header/stdexcept.html
 // pour un exemple d'exception voir le fichier exception.cpp
 
+// int* create(int size)
+//{
+//     int tab[size];
+//     return tab;
+// }
+// Ne marche pas car on renvoie une variable qui n'existe que dans la pile d'execution
+
+int *create(int size)
+{
+    int *t = new int[size];
+    return t;
+}
+
 int main()
 {
-
     // on définit les 3 variables constituant la pile
     int size = 5;
-    int stack[size];
+    // int stack[size];
+    int *stack = create(size);
     int nb = 0;
 
     // rajoutez aux blocks catch les erreurs
     // pouvant être déclenchées par les opérations sur la pile
     try
     {
+
         print(stack, size, nb); // affiche [ [
         push(stack, size, nb, -17);
-
         // on affiche l'élément en haut de pile
         std::cout << top(stack, size, nb) << std::endl; // affiche -17
         push(stack, size, nb, 90);
@@ -113,8 +126,9 @@ int main()
         push(stack, size, nb, -78);
         push(stack, size, nb, -9);
         push(stack, size, nb, -56);
-        //push(stack, size, nb, 45);
+        // push(stack, size, nb, 45);
         print(stack, size, nb);
+        delete[] stack;
     }
     catch (std::length_error &e)
     {

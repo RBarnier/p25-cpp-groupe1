@@ -117,7 +117,7 @@ Pour décider de l'affichage, on peut donc passer à cette méthode le type de l
 */
 #include <iostream>
 
-int cpt=0;
+int cpt = 0;
 
 // the type enum
 enum Order
@@ -144,6 +144,12 @@ struct Node
 
      Node(int v) : value(v), left(nullptr), right(nullptr)
      {
+     }
+
+     ~Node()
+     {
+          delete left;
+          delete right;
      }
 
      void insert(int v)
@@ -189,17 +195,23 @@ struct Node
           {
                return true;
           }
-          if ((left == nullptr and v < value) or (right == nullptr and v > value))
+          else
           {
-               return false;
-          }
-          if (v < value)
-          {
-               return left->search(v);
-          }
-          if (v > value)
-          {
-               return right->search(v);
+               if ((left == nullptr and v < value) or (right == nullptr and v > value))
+               {
+                    return false;
+               }
+               else
+               {
+                    if (v < value)
+                    {
+                         return left->search(v);
+                    }
+                    if (v > value)
+                    {
+                         return right->search(v);
+                    }
+               }
           }
      }
 
@@ -207,9 +219,9 @@ struct Node
      {
           for (int i = 0; i < h; i++)
           {
-               std::cout<<"   ";
+               std::cout << "   ";
           }
-          std::cout<<value<<std::endl;
+          std::cout << value << std::endl;
      }
 
      void print()
@@ -218,17 +230,23 @@ struct Node
           {
                printN(cpt);
           }
-          cpt+=1;
+          cpt += 1;
           right->traversal();
           printN(cpt);
           left->traversal();
-          cpt-=1;
+          cpt -= 1;
      }
 };
 
 struct BinaryTree
 {
      Node *root = nullptr;
+
+     ~BinaryTree()
+     {
+          delete root;
+     }
+
      // et ces fonctions à implémenter à minima
      void insert(int v)
      {
