@@ -25,6 +25,7 @@ Only by adding some code and modifying the main function.
 
 class Shape
 {
+public:
   int x;
   int y;
 
@@ -80,40 +81,90 @@ public:
   }
 };
 
+class Editor
+{
+  std::vector<Shape *> v;
+  public:
+  Editor(){}
+
+  Editor(Shape s)
+  {
+    v.push_back(&s);
+  }
+  
+  void add(Shape *s)
+  {
+    v.push_back(s);
+  }
+
+  Shape *find(int x, int y)
+  {
+    for (int i = 0; i < sizeof(v); i++)
+    {
+      if ((v[i]->x = x) and (v[i]->y = y))
+      {
+        return v[i];
+      }
+    }
+  }
+
+  void remove(int x, int y)
+  {
+    for (int i = 0; i < sizeof(v); i++)
+    {
+      if ((v[i]->x = x) and (v[i]->y = y))
+      {
+        v.erase(v.begin() + i);
+      }
+    }
+  }
+
+  double area(int x, int y)
+  {
+    for (int i = 0; i < sizeof(v); i++)
+    {
+      if ((v[i]->x = x) and (v[i]->y = y))
+      {
+        return v[i]->area();
+      }
+    }
+  }
+};
+
 int main()
 {
   try
   {
-      Circle c1(100, 50, 12.4);
-  c1.move(15, 67);
-  std::cout << c1.area() << std::endl;
+    Circle c1(100, 50, 12.4);
+    c1.move(15, 67);
+    std::cout << c1.area() << std::endl;
 
-  Circle c2(30, 120, 45.89);
+    Circle c2(30, 120, 45.89);
 
-  Rectangle r1(30, 40, 60, 50);
-  r1.area();
+    Rectangle r1(30, 40, 60, 50);
+    r1.area();
 
-  Rectangle r2(70, 80, 100, 67);
+    Rectangle r2(70, 80, 100, 67);
 
-  std::vector<Shape *> shapes;
-  shapes.push_back(&c1);
-  shapes.push_back(&r1);
+    std::vector<Shape *> shapes;
+    shapes.push_back(&c1);
+    shapes.push_back(&r1);
 
-  for (int i = 0; i < shapes.size(); i++)
-  {
-    shapes[i]->move(2, 3);
-    std::cout << shapes[i]->area() << std::endl;
+    for (int i = 0; i < shapes.size(); i++)
+    {
+      shapes[i]->move(2, 3);
+      std::cout << shapes[i]->area() << std::endl;
+    }
+      Editor ed;
+    
+      ed.add(&c1);
+      ed.add(&c2);
+      ed.add(&r1);
+      ed.add(&r2);
+      ed.find(71, 81)->area();
+      ed.find(30, 120)->move(10, 80);
   }
-  //  Editor ed;
-  //
-  //  ed.add(c1);
-  //  ed.add(c2);
-  //  ed.add(r1);
-  //  ed.add(r2);
-  //  ed.find(71, 81).area();
-  //  ed.find(30, 120).move(10, 80);
-  }
-  catch(const std::exception& e)
+  catch (const std::exception &e)
   {
     std::cerr << e.what() << '\n';
   }
